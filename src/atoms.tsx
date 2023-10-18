@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 import { character } from "./Components/characterData";

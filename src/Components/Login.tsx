@@ -87,7 +87,6 @@ function Login() {
       profile_image: "",
       password: await hashPassword(data.password),
     };
-    console.log(loggedInUserData);
     const jwt = generateToken(loggedInUserData);
     setJwt(jwt);
     try {

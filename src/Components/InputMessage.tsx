@@ -171,6 +171,9 @@ const InputMessage = () => {
 
   const onValid = (data: any) => {};
   async function callOpenApi() {
+    if (!text) {
+      return;
+    }
     setIsLoading(true);
     setIsListening(false);
     addNewData(category, text, getTimeNow(), true);
@@ -289,7 +292,8 @@ const InputMessage = () => {
         value={text}
         autoComplete="off"
         ref={inputRef}
-      ></input>
+        required
+      />
       <Buttons>
         <SendButton onClick={callOpenApi} disabled={isLoading}>
           <FontAwesomeIcon icon={faPaperPlane} />
