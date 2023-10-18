@@ -9,7 +9,8 @@ import { allUserData, loginState, savedJwt } from "../atoms";
 import { generateToken } from "../services/auth";
 import Cookies from "js-cookie";
 import { initialData } from "./initialUserData";
-import { DOMAIN_URL } from "../apiKeys";
+import { DOMAIN_URL, KAKAO_CLIENT, KAKAO_CLIENT_SECRET } from "../apiKeys";
+
 const KakaoIcon = styled(FontAwesomeIcon)`
   scale: 1.3;
   width: 20px;
@@ -38,7 +39,7 @@ const KakaoButton = styled.button`
 export const KakaoLogin = () => {
   const baseUrl = "https://kauth.kakao.com/oauth/authorize";
   const config = {
-    client_id: "fbe17719e0bfefa4b2b6f51dc1bea7a8",
+    client_id: `${KAKAO_CLIENT}`,
     redirect_uri: "https://open-ai-vercel.vercel.app/kakao-login",
     response_type: "code",
   };
@@ -72,8 +73,8 @@ export const FinishKakaoLogin = ({ code }: FinishKakaoLoginProps) => {
   useEffect(() => {
     const baseUrl = "https://kauth.kakao.com/oauth/token";
     const config = {
-      client_id: "fbe17719e0bfefa4b2b6f51dc1bea7a8",
-      client_secret: "4MTRap8K4TL0tmycZ70bhlSjBPzXwzRY",
+      client_id: `${KAKAO_CLIENT}`,
+      client_secret: `${KAKAO_CLIENT_SECRET}`,
       grant_type: "authorization_code",
       redirect_uri: "https://open-ai-vercel.vercel.app/kakao-login",
       code: code as string,
