@@ -1,31 +1,50 @@
-# Create React App
+# Chatbot Website with Various Features
 
-This directory is a brief example of a [Create React App](https://github.com/facebook/create-react-app) site that can be deployed to Vercel with zero configuration.
+This project is a feature-rich chatbot website that offers a wide range of functionalities, utilizing different technologies for both the frontend and backend components.
 
-## Deploy Your Own
+## Technologies Used
 
-Deploy your own Create React App project with Vercel.
+### Frontend
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/create-react-app&template=create-react-app)
+- TypeScript
+- Recoil
+- React
+- Styled-Components
 
-_Live Example: https://create-react-template.vercel.app/_
+### Backend
 
-## Available Scripts
+- Node.js
+- Express
+- MongoDB (MongoDB Atlas server)
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- **User Authentication:** The website provides a user-friendly login and signup system. Users can log in with a username and password. Usernames are validated for uniqueness through the username check API. If a username exists, the system returns "Username exists." If not, the system checks if the password matches and, if it does, securely saves user data in MongoDB using bcrypt for password hashing. Additionally, users can log in using Kakao social login. When a user logs in, their data is either saved in MongoDB for first-time users or they are redirected to the logged-in (home) page if they are already registered.
 
-Runs the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Chatbot with Multiple Characters:** Once logged in, users can engage with a chatbot featuring various characters. The chatbots utilize OpenAI API with different prompts.
 
-The page will reload when you make changes. You may also see any lint errors in the console.
+- **Data Storage:** All chat data is stored in MongoDB to maintain a record of interactions.
 
-### `npm test`
+- **Character Selection:** Users can click on chat characters to retrieve all chat data from MongoDB.
 
-Launches the test runner in the interactive watch mode. See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Text-to-Speech (TTS):** After adding new text data and receiving responses from the chatbot, text-to-speech conversion begins. This feature is implemented using `window.speechSynthesis`.
 
-### `npm run build`
+- **Speech-to-Text (STT):** A speech recognition module (`mic`) is integrated to enable users to chat with voice commands. Users can also choose their preferred language. The system supports English as a default language, as well as Korean, Japanese, and Chinese. The language selection impacts both user input and chatbot responses. Text-to-speech output is also adjusted according to the selected language.
 
-Builds the app for production to the `build` folder.
+- **Profile Page:** Users can access the profile page to update their user data, including username, password, and profile image. When users want to change their profile image, the system accepts image files, converts them into Base64-encoded URLs, and saves them in MongoDB.
 
-It correctly bundles React in production mode and optimizes the build for the best performance. The build is minified and the filenames include the hashes.
+- **State Management:** Recoil is utilized to manage user login state. JWT (JSON Web Tokens) with cookies is implemented to persist user data across sessions. This ensures that users don't need to log in again when reopening the webpage.
+
+## Getting Started
+
+1. Clone this repository.
+2. Install the required dependencies using npm or yarn.
+3. Run the project by executing `npm start` or `yarn start`.
+
+## Demo
+
+You can view the live demo of this project at [Dean's Portfolio](https://open-ai-vercel.vercel.app/openAI/chat).
+
+## Contact
+
+If you have any questions or would like to collaborate, feel free to contact me at [deantube8078@gmail.com]
