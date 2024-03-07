@@ -7,6 +7,7 @@ import { DOMAIN_URL } from "../apiKeys";
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -38,7 +39,7 @@ const Comments = () => {
           return (
             <li key={comment.id}>
               <span>{comment.username} : </span>
-              <span>{comment.title}</span>
+              <span>{comment.content}</span>
             </li>
           );
         })}

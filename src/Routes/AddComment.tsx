@@ -54,10 +54,6 @@ const AddComment = () => {
     <Wrapper>
       <CommentForm onSubmit={handleSubmit(onSubmit)}>
         <input
-          {...register("title", { required: true })}
-          placeholder="Add Title"
-        />
-        <input
           {...register("content", { required: true })}
           placeholder="Add Content"
         />

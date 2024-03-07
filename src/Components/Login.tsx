@@ -73,6 +73,12 @@ const LoginButton = styled.button`
   margin-right: 20px;
 `;
 
+const ExampleLogin = styled.div`
+  position: absolute;
+  color: black;
+  font-size: 20px;
+`;
+
 function Login() {
   const { register, handleSubmit } = useForm();
   const [allUserDatas, setAllUserDatas] = useRecoilState(allUserData);
@@ -95,9 +101,10 @@ function Login() {
           Authorization: `Bearer ${jwt}`,
         },
       });
-      console.log(response);
+
       setAllUserDatas(response.data);
       setIsLoggedIn(true);
+      navigate("/openAI/chat");
     } catch (error) {
       const axiosError = error as AxiosError;
       setErrorMessage(axiosError.response?.data as string);
@@ -135,6 +142,10 @@ function Login() {
       <SocialLoginButton>
         <KakaoLogin />
       </SocialLoginButton>
+      <ExampleLogin>
+        <div>Example ID,PW</div>
+        <div>asdf,asdf</div>
+      </ExampleLogin>
     </LoginBox>
   );
 }

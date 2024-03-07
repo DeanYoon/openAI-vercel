@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { OpenAIApi, Configuration } from "openai";
 
 import {
   allUserData,
@@ -23,7 +24,7 @@ import {
   faMicrophoneSlash,
   faPaperPlane,
 } from "@fortawesome/free-solid-svg-icons";
-import { characterName } from "./characterData";
+import { characterName, character } from "./characterData";
 import axios from "axios";
 
 const ChatBotForm = styled.form`
@@ -105,6 +106,9 @@ const languages = [
   // add more languages here
 ];
 
+const configiration = new Configuration({
+  apiKey: process.env.REACT_APP_OPENAI_API_KEY,
+});
 const InputMessage = () => {
   const { register, handleSubmit } = useForm();
   const [text, setText] = useRecoilState(inputText);
@@ -178,55 +182,30 @@ const InputMessage = () => {
     setIsListening(false);
     addNewData(category, text, getTimeNow(), true);
     setText("");
-    const APIBody = {
-      model: "text-davinci-003",
-      prompt: `
-      ${botTypePrompt}
-      ${
-        category !== "translation" &&
-        allUserDatas.chatData[category].myTextList
-          .map((data, i) => {
-            return `You: ${data.text} \n ${characterName}: ${allUserDatas.chatData[category].aiTextList[i]}`;
-          })
-          .join("")
-      }
 
-      You : ${text}\n ${characterName}:`,
-      temperature: 0.5,
-      max_tokens: 100, //질문이 어려워질수록 더 많은 토큰을 사용한다. 따라서 맥스를 설정해 주어 총 사용 토큰이 너무많지 않도록 제한을 준다
-      top_p: 1.0,
-      frequency_penalty: 1,
-      presence_penalty: 1,
-    };
-
-    await fetch("https://api.openai.com/v1/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + OPENAI_API_KEY,
-      },
-      body: JSON.stringify(APIBody),
-    })
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        let answerFromOpenAI: string = data.choices[0].text;
-        answerFromOpenAI = answerFromOpenAI.replace("[object Object],", "");
-        addNewData(category, answerFromOpenAI, getTimeNow(), false);
-        setIsLoading(false);
-        setAiAnswer(answerFromOpenAI);
-      })
-      .catch((error) => {
-        console.log(error);
-        addNewData(
-          category,
-          "failed to load text from ChatGPT",
-          getTimeNow(),
-          false
-        );
-        setIsLoading(false);
+    try {
+      const selectedCharacter = character.filter((character) => {
+        return character.title.toLowerCase() === category;
       });
+
+      const { data } = await axios.post(`${DOMAIN_URL}/chat`, {
+        category: selectedCharacter[0].text,
+        data: text,
+      });
+
+      addNewData(category, data, getTimeNow(), false);
+      setIsLoading(false);
+      setAiAnswer(data);
+    } catch (error) {
+      console.error(error);
+      addNewData(
+        category,
+        "failed to load text from ChatGPT",
+        getTimeNow(),
+        false
+      );
+      setIsLoading(false);
+    }
   }
 
   ///////////////// ///speech to text///////////////////////////////

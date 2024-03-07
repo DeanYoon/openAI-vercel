@@ -8,10 +8,10 @@ import styled from "styled-components";
 import { allUserData, loginState, savedJwt } from "../atoms";
 import { generateToken } from "../services/auth";
 import Cookies from "js-cookie";
-import { initialData } from "./initialUserData";
+
 import { DOMAIN_URL, KAKAO_CLIENT, KAKAO_CLIENT_SECRET } from "../apiKeys";
 
-// const URL = "http://localhost:3000";
+const URL = process.env.REACT_APP_REDIRECT_URL;
 
 const KakaoIcon = styled(FontAwesomeIcon)`
   scale: 1.3;
@@ -42,7 +42,7 @@ export const KakaoLogin = () => {
   const baseUrl = "https://kauth.kakao.com/oauth/authorize";
   const config = {
     client_id: `${KAKAO_CLIENT}`,
-    redirect_uri: `${DOMAIN_URL}/kakao-login`,
+    redirect_uri: `${URL}/kakao-login`,
     response_type: "code",
   };
   const params = new URLSearchParams(config).toString();
@@ -78,7 +78,7 @@ export const FinishKakaoLogin = ({ code }: FinishKakaoLoginProps) => {
       client_id: `${KAKAO_CLIENT}`,
       client_secret: `${KAKAO_CLIENT_SECRET}`,
       grant_type: "authorization_code",
-      redirect_uri: `${DOMAIN_URL}/kakao-login`,
+      redirect_uri: `${URL}/kakao-login`,
       code: code as string,
     };
     const params = new URLSearchParams(config).toString();
