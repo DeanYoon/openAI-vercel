@@ -98,15 +98,32 @@ function Signup() {
     if (data.password === data.passwordConfirm) {
       setIsWrongPassword("");
       try {
-        const response = await axios.post(
-          `${DOMAIN_URL}/signup`,
-          initialData(loggedInUserData)
-        );
+        // const response = await axios.post(
+        //   `${DOMAIN_URL}/signup`,
+        //   initialData(loggedInUserData)
+        // );
 
-        if (response) {
-          setIsLoggedIn(true);
-          setAllUserDatas(response.data);
-        }
+        // if (response) {
+        //   setIsLoggedIn(true);
+        //   setAllUserDatas(response.data);
+        // }
+
+        await fetch(`${DOMAIN_URL}/signup`, {
+          method: "POST",
+          body: JSON.stringify(initialData(loggedInUserData)),
+        })
+          .then((response) => {
+            const { ok } = response;
+            return ok ? response.json() : null;
+          })
+          .then((data) => {
+            if (data) {
+              setIsLoggedIn(true);
+              setAllUserDatas(data);
+            } else {
+              alert("User exists");
+            }
+          });
       } catch (error) {
         const axiosError = error as AxiosError;
         // setErrorMessage(axiosError.response?.data as string);
@@ -155,9 +172,9 @@ function Signup() {
             </LoginButton>
           </Buttons>
         </LoginForm>
-        <SocialLoginButton>
+        {/* <SocialLoginButton>
           <KakaoLogin />
-        </SocialLoginButton>
+        </SocialLoginButton> */}
       </LoginBox>
     </HomeWrapper>
   );

@@ -24,6 +24,15 @@ const CommentForm = styled.form`
   display: flex;
   flex-direction: column;
 `;
+const FileInput = styled.input``;
+const FormWrapper = styled.div``;
+
+const FormWrapperTop = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 export type IComment = {
   id: number;
   title: string;
@@ -65,14 +74,27 @@ const Profile = () => {
         ? await hashPassword(data.password)
         : loggedInUserInfo.password,
     };
+    console.log(edittedUserData);
 
     try {
-      const response = await axios.post(`${DOMAIN_URL}/profile/edit`, {
-        edittedUserData: edittedUserData,
-        prevUsername: loggedInUserInfo.username,
-      });
-      setLoggedInUserInfo(edittedUserData);
-      console.log(response);
+      // const response = await axios.post(`${DOMAIN_URL}/profile/edit`, {
+      //   edittedUserData: edittedUserData,
+      //   prevUsername: loggedInUserInfo.username,
+      // });
+      // setLoggedInUserInfo(edittedUserData);
+
+      await fetch(`${DOMAIN_URL}/profile/edit`, {
+        method: "POST",
+        body: JSON.stringify({
+          edittedUserData: edittedUserData,
+          prevUsername: loggedInUserInfo.username,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // console.log(data);
+          // setLoggedInUserInfo(data);
+        });
     } catch (error: any) {
       console.log(error);
     }
@@ -119,35 +141,39 @@ const Profile = () => {
 
   return (
     <Wrapper>
-      <img src={imageData} />
-      <input
-        {...register("profileImg")}
-        type="file"
-        accept=".jpg, .jpeg, .png, .gif, .svg"
-        onChange={handleFileUpload}
-      />
-      <CommentForm onSubmit={handleSubmit(onSubmit)}>
-        <input
-          {...register("username", { required: true })}
-          placeholder="username"
-          onChange={(e) =>
-            setUpdatedInfo({ ...updatedInfo, username: e.target.value })
-          }
-          value={updatedInfo.username}
-        />
-        <input
-          type="password"
-          {...register("password")}
-          placeholder="password"
-        />
-        <input
-          type="password"
-          {...register("password_conf")}
-          placeholder="confirm password"
-        />
+      <FormWrapper>
+        <FormWrapperTop>
+          <img src={imageData} />
+          <FileInput
+            {...register("profileImg")}
+            type="file"
+            accept=".jpg, .jpeg, .png, .gif, .svg"
+            onChange={handleFileUpload}
+          />
+        </FormWrapperTop>
+        <CommentForm onSubmit={handleSubmit(onSubmit)}>
+          <input
+            {...register("username", { required: true })}
+            placeholder="username"
+            onChange={(e) =>
+              setUpdatedInfo({ ...updatedInfo, username: e.target.value })
+            }
+            value={updatedInfo.username}
+          />
+          <input
+            type="password"
+            {...register("password")}
+            placeholder="password"
+          />
+          <input
+            type="password"
+            {...register("password_conf")}
+            placeholder="confirm password"
+          />
 
-        <button>Post</button>
-      </CommentForm>
+          <button>Post</button>
+        </CommentForm>
+      </FormWrapper>
     </Wrapper>
   );
 };

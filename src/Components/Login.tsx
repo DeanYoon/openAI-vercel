@@ -96,19 +96,42 @@ function Login() {
     const jwt = generateToken(loggedInUserData);
     setJwt(jwt);
     try {
-      const response = await axios.post(`${DOMAIN_URL}/login`, data, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
-
-      setAllUserDatas(response.data);
-      setIsLoggedIn(true);
-      navigate("/openAI/chat");
+      await fetch(`${DOMAIN_URL}/login`, {
+        method: "POST",
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          const { ok } = response;
+          return ok ? response.json() : null;
+        })
+        .then((data) => {
+          if (data) {
+            setAllUserDatas(data);
+            setIsLoggedIn(true);
+            navigate("/openAI/chat");
+          } else {
+            alert("Login Failed");
+          }
+        });
     } catch (error) {
       const axiosError = error as AxiosError;
       setErrorMessage(axiosError.response?.data as string);
     }
+  };
+
+  const handleTest = async () => {
+    const data = { username: "asdf" };
+
+    // const response = await axios.post(`${DOMAIN_URL}`, data);
+
+    await fetch(`${DOMAIN_URL}`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
   };
 
   return (
@@ -139,12 +162,12 @@ function Login() {
           </Link>
         </Buttons>
       </LoginForm>
-      <SocialLoginButton>
+      {/* <SocialLoginButton>
         <KakaoLogin />
-      </SocialLoginButton>
+      </SocialLoginButton> */}
       <ExampleLogin>
         <div>Example ID,PW</div>
-        <div>asdf,asdf</div>
+        <div onClick={handleTest}>qwer,qwer</div>
       </ExampleLogin>
     </LoginBox>
   );

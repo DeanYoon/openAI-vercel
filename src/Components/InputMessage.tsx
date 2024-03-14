@@ -102,7 +102,7 @@ const languages = [
   { label: "En", value: "en-US" },
   { label: "Kr", value: "ko-KR" },
   { label: "Jp", value: "ja-JP" },
-  { label: "Zh", value: "zh-CN" },
+
   // add more languages here
 ];
 
@@ -188,14 +188,28 @@ const InputMessage = () => {
         return character.title.toLowerCase() === category;
       });
 
-      const { data } = await axios.post(`${DOMAIN_URL}/chat`, {
-        category: selectedCharacter[0].text,
-        data: text,
-      });
+      // const { data } = await axios.post(`${DOMAIN_URL}/chat`, {
+      //   category: selectedCharacter[0].text,
+      //   data: text,
+      // });
 
-      addNewData(category, data, getTimeNow(), false);
-      setIsLoading(false);
-      setAiAnswer(data);
+      // addNewData(category, data, getTimeNow(), false);
+      // setIsLoading(false);
+      // setAiAnswer(data);
+
+      await fetch(`${DOMAIN_URL}/chat`, {
+        method: "POST",
+        body: JSON.stringify({
+          category: selectedCharacter[0].text,
+          data: text,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          addNewData(category, data, getTimeNow(), false);
+          setIsLoading(false);
+          setAiAnswer(data);
+        });
     } catch (error) {
       console.error(error);
       addNewData(
@@ -243,10 +257,10 @@ const InputMessage = () => {
   /////////////// Text to Speech //////////////////////
 
   useEffect(() => {
-    axios
-      .post(`${DOMAIN_URL}/users/${allUserDatas.username}`, allUserDatas)
-      .then((response) => console.log("Success", response))
-      .catch((error) => console.error(error));
+    // axios
+    //   .post(`${DOMAIN_URL}/users/${allUserDatas.username}`, allUserDatas)
+    //   .then((response) => console.log("Success", response))
+    //   .catch((error) => console.error(error));
 
     const voices = speechSynthesis.getVoices();
     if (isSound) {

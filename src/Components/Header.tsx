@@ -58,13 +58,13 @@ const Header = () => {
         <Button color="#00CA4E"></Button>
       </ButtonBox>
       {userData.profileUrl ? (
-        <Link to={"/openAI/profile"}>
-          <UserInfo>
-            <Name>{userData.username}</Name>
-            <UserIcon src={`${userData.profileUrl}`} />
-          </UserInfo>
-        </Link>
-      ) : null}
+        // <Link to={"/openAI/profile"}>
+        <UserInfo>
+          <Name>{userData.username}</Name>
+          <UserIcon src={`${userData.profileUrl}`} />
+        </UserInfo>
+      ) : // </Link>
+      null}
     </Wrapper>
   );
 };

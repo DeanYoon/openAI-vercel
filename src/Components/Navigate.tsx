@@ -67,11 +67,11 @@ function Navigate() {
             <FontAwesomeIcon icon={faMessage}></FontAwesomeIcon>
           </Item>
         </Link>
-        <Link to="/openAI/comments">
+        {/* <Link to="/openAI/comments">
           <Item>
             <FontAwesomeIcon icon={faCubes}></FontAwesomeIcon>
           </Item>
-        </Link>
+        </Link> */}
       </Items>
       <Setting>
         <Item onClick={resetData}>

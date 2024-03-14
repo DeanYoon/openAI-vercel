@@ -19,15 +19,20 @@ const CommentList = styled.ul`
     font-size: 20px;
   }
 `;
-const Comment = styled.li``;
 
 const Comments = () => {
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`${DOMAIN_URL}/comments`);
-      setComments(response.data);
+      // const response = await axios.get(`${DOMAIN_URL}/comments`);
+
+      await fetch(`${DOMAIN_URL}/comments`, {
+        method: "GET",
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data));
+      // setComments(response.data);
     };
     fetchData();
   }, []);
