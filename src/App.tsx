@@ -34,6 +34,7 @@ function App() {
         {width < 500 ? null : <Navigate />}
         <Header />
         <Routes>
+          <Route path="/" element={<Home />}></Route>
           <Route path="/openAI/home" element={<Home />}></Route>
           <Route
             path="/openAI/chat"
